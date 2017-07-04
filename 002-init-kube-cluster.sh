@@ -17,7 +17,7 @@ sleep 5
 
 mkdir -p /home/kubeadmin/.kube
 cp -i /etc/kubernetes/admin.conf /home/kubeadmin/.kube/config
-chown -R $(id -u):$(id -g) /home/kubeadmin/.kube
+chown -R kubeadmin:kubeadmin /home/kubeadmin/.kube
 
 export MY_TOKEN=$(kubeadm token list|awk '/kubeadm init/ {print $1}')
 

@@ -10,14 +10,18 @@ useradd -G wheel kubeadmin
 sed -ie 's/^%wheel/#%wheel/' /etc/sudoers
 sed -ie '/NOPASSWD/s/^#.*%wheel/%wheel/' /etc/sudoers
 
-su - kubeadmin
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
+systemctl start docker.service
+systemctl start kubelet.service
+
+sleep 5
+
+mkdir -p /home/kubeadmin/.kube
+cp -i /etc/kubernetes/admin.conf /home/kubeadmin/.kube/config
+chown -R $(id -u):$(id -g) /home/kubeadmin/.kube
 
 export MY_TOKEN=$(kubeadm token list|awk '/kubeadm init/ {print $1}')
 
 # http://docs.projectcalico.org/v2.3/getting-started/kubernetes/installation/hosted/kubeadm/
 # https://kubernetes.io/docs/concepts/cluster-administration/addons/
-# kubectl apply -f http://docs.projectcalico.org/v2.3/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
-# kubectl create -f https://git.io/kube-dashboard
+su -l -c 'kubectl apply -f http://docs.projectcalico.org/v2.3/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml' kubeadmin
+su -l -c 'kubectl create -f https://git.io/kube-dashboard' kubeadmin

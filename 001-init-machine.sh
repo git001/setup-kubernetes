@@ -19,5 +19,6 @@ yum -y install bash-completion docker kubelet kubeadm git
 yum -y update
 systemctl enable kubelet.service
 systemctl enable docker.service
+echo 'net.bridge.bridge-nf-call-iptables = 1' > /etc/sysctl.d/01-bridge-nf-call-iptables.conf
 sleep 5
 shutdown -r now

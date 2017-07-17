@@ -15,7 +15,7 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
 EOF
 
 setenforce 0
-yum -y install bash-completion docker kubelet kubeadm git
+yum -y install bash-completion docker kubeadm-1.7.0-0 kubectl-1.7.0-0 kubelet-1.7.0-0 git
 yum -y update
 systemctl enable kubelet.service
 systemctl enable docker.service
